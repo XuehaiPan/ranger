@@ -4,7 +4,6 @@
 from __future__ import (absolute_import, division, print_function)
 
 import errno
-import math
 import os.path
 import select
 from collections import deque
@@ -94,12 +93,13 @@ class CopyLoader(Loadable, FileManagerAware):  # pylint: disable=too-many-instan
                     pass
         yield size
 
-    def generate(self):
+    def generate(self):  # pylint: disable=too-many-branches
         if not self.copy_buffer:
             return
 
         from ranger.ext import shutil_generatorized as shutil_g
         # TODO: Don't calculate size when renaming (needs detection)
+        size = 0
         for size in self._calculate_size():
             yield
         size = max(1, size)
