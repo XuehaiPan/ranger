@@ -65,7 +65,8 @@ def test_move_regular_file(tmpdir):
     moved = os.path.join(dst_dir, "file.txt")
     assert os.path.isfile(moved)
     assert not os.path.exists(str(src))
-    assert open(moved).read() == "hello"
+    with open(moved, encoding="utf-8") as f:
+        assert f.read() == "hello"
 
 
 def test_move_directory(tmpdir):
@@ -94,7 +95,8 @@ def test_move_file_to_file(tmpdir):
 
     assert os.path.isfile(dst)
     assert not os.path.exists(str(src))
-    assert open(dst).read() == "content"
+    with open(dst, encoding="utf-8") as f:
+        assert f.read() == "content"
 
 
 def test_move_symlink_into_unrelated_directory(tmpdir):
@@ -142,5 +144,6 @@ def test_move_symlink_to_file_into_directory(tmpdir):
 
     moved = os.path.join(dst_dir, "link_to_file")
     assert os.path.islink(moved)
-    assert open(moved).read() == "data"
+    with open(moved, encoding="utf-8") as f:
+        assert f.read() == "data"
     assert not os.path.lexists(symlink)
